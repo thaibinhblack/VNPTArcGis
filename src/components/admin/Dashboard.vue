@@ -1,5 +1,5 @@
 <template>
-  <section id="dashboard">
+  <section id="dashboard" style="padding-left:50px">
     <!-- <mdb-card class="mb-4">
       <mdb-card-body class="d-sm-flex justify-content-between">
         <h4 class="mb-sm-0 pt-2">

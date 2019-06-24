@@ -2,10 +2,12 @@
     <div id="app">
     
         <div id="viewDiv">
-            <load v-bind:loadding="loadding" />
-            <widget v-if="action != null && action != 'Search'" v-bind:action="action" @updateaction="updateaction" />
+            <!-- <load v-bind:loadding="loadding" /> -->
+            <!-- <widget v-if="action != null && action != 'Search'" v-bind:action="action" @updateaction="updateaction" /> -->
+            <!-- <AddFeature v-bind:showadd="showadd"  @updateshowadd="updateshowadd" />
             <UpdateFeature v-bind:showUpdate="showUpdate" @updateshowUpdate="updateshowUpdate" />
-            <Search v-bind:show="show" @updateshow="updateshow" @goto="goto" @resetFeature="resetFeature"/>
+            <Search v-bind:show="show" @updateshow="updateshow" @goto="goto" @resetFeature="resetFeature"/> -->
+            
         </div>
        
     </div>
@@ -17,6 +19,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 import load from '../loading/Load.vue'
 import widget from './widget/Widget.vue'
+import AddFeature from './widget/AddFeature.vue'
 import UpdateFeature from './widget/UpdateFeature.vue'
 import {mapActions} from 'vuex'
 import { loadModules } from 'esri-loader'
@@ -25,27 +28,34 @@ import Search from './widget/Search.vue'
 import { async } from 'q';
 export default {
     name: 'Map',
-    props: ["actionName"],
-    watch:{
-       async actionName(newVal,oldVal){
-           this.action = newVal
-           if(newVal == 'Search'){
-               this.show = true
-            //    console.log('Ssearch',this.show,newVal, oldVal)
-           }
-           else if(newVal == 'updateFeature')
-           {
-               this.showUpdate = true
-           }
-       },
-    },
+    // props: ["actionName"],
+    // watch:{
+    //    async actionName(newVal,oldVal){
+          
+    //        this.action = newVal
+    //        if(newVal == 'Search'){
+    //            this.show = true
+    //         //    console.log('Ssearch',this.show,newVal, oldVal)
+    //        }
+    //        else if(newVal == 'updateFeature')
+    //        {
+    //            this.showUpdate = true
+    //        }
+    //        else if(newVal == 'addFeature')
+    //        {
+    //            this.showadd = true
+    //             console.log(newVal)
+    //        }
+    //    },
+    // },s
     data(){
         return{
             loadding: false,
             action: this.actionName,
             action: true,
             show: false,
-            showUpdate: false
+            showUpdate: false,
+            showadd: false
            
         }
     },
@@ -53,10 +63,15 @@ export default {
         load,
         widget,
         Search,
-        UpdateFeature
+        UpdateFeature,
+        AddFeature
     },
     methods:{
         ...mapActions(['addFeature']),
+        updateshowadd(val){
+            this.showadd = val
+             this.$emit("updateaction",null)
+        },
         updateshow(val){
             this.show = val
             this.$emit("updateaction",null)
@@ -91,22 +106,22 @@ export default {
                 outFields: ["*"],
                 title: "Cây "+val.attributes.SoHieu+" - "+val.attributes.MaTenCX+"",
                 content:"<table class='esri-widget__table'> " +
-          "<tr><th>Số Hiệu </th><td>" + val.attributes.SoHieu + "</td></tr> " +
-          "<tr><th>Tên Cây Xanh</th><td>" + val.attributes.MaTenCX + "</td></tr> " +
-          "<tr><th>Kinh độ </th><td>" + (val.attributes.KinhDo != null ? parseFloat(val.attributes.KinhDo) : '(Rỗng)') + "</td></tr> " +
-          "<tr><th>Vĩ độ </th><td>" + (val.attributes.ViDo != null ? parseFloat(val.attributes.ViDo) : '(Rỗng)') + "</td></tr> " +
-          "<tr><th>Đường Kính </th><td>" + parseFloat(val.attributes.DuongKinh) + "</td></tr> " +
-          "<tr><th>Chiều Cao </th><td>" + parseFloat(val.attributes.ChieuCao) + "</td></tr> " +
-          "<tr><th>Độ Rộng Tán </th><td>" + parseFloat(val.attributes.DoRongTan != null ? val.attributes.DoRongTan : '(Rỗng)') + "</td></tr> " +
-          "<tr><th>Ngày Trồng </th><td>" + (val.attributes.NgayTrong != null ? val.attributes.NgayTrong : '(rỗng)') + "</td></tr> " +
-          "<tr><th>Ngày Cập Nhật </th><td>" + val.attributes.NgayCapNhat + "</td></tr> " +
-          "<tr><th>Thuộc Tính </th><td>" + (val.attributes.ThuocTinh != null ? val.attributes.ThuocTinh : '(rỗng)') + "</td></tr> " +
-          "<tr><th>Ghi Chú </th><td>" + val.attributes.GhiChu + "</td></tr> " +
-          "<tr><th>Tuyến Đường </th><td>" + val.attributes.TuyenDuong + "</td></tr> " +
-          "<tr><th>NVKS_X </th><td>" + (val.attributes.NVKS_X != null ? val.attributes.NVKS_X : '(rỗng)') + "</td></tr> " +
-          "<tr><th>NVKS_Y </th><td>" + (val.attributes.NVKS_Y != null ? val.attributes.NVKS_Y : '(rỗng)') + "</td></tr> " +
-          "<tr><th>Người Cập Nhật </th><td>" + (val.attributes.NguoiCapNhat != null ? val.attributes.NguoiCapNhat : '(rỗng)') + "</td></tr> " +
-          "</table> ",
+                "<tr><th>Số Hiệu </th><td>" + val.attributes.SoHieu + "</td></tr> " +
+                "<tr><th>Tên Cây Xanh</th><td>" + val.attributes.MaTenCX + "</td></tr> " +
+                "<tr><th>Kinh độ </th><td>" + (val.attributes.KinhDo != null ? parseFloat(val.attributes.KinhDo) : '(Rỗng)') + "</td></tr> " +
+                "<tr><th>Vĩ độ </th><td>" + (val.attributes.ViDo != null ? parseFloat(val.attributes.ViDo) : '(Rỗng)') + "</td></tr> " +
+                "<tr><th>Đường Kính </th><td>" + parseFloat(val.attributes.DuongKinh) + "</td></tr> " +
+                "<tr><th>Chiều Cao </th><td>" + parseFloat(val.attributes.ChieuCao) + "</td></tr> " +
+                "<tr><th>Độ Rộng Tán </th><td>" + parseFloat(val.attributes.DoRongTan != null ? val.attributes.DoRongTan : '(Rỗng)') + "</td></tr> " +
+                "<tr><th>Ngày Trồng </th><td>" + (val.attributes.NgayTrong != null ? val.attributes.NgayTrong : '(rỗng)') + "</td></tr> " +
+                "<tr><th>Ngày Cập Nhật </th><td>" + val.attributes.NgayCapNhat + "</td></tr> " +
+                "<tr><th>Thuộc Tính </th><td>" + (val.attributes.ThuocTinh != null ? val.attributes.ThuocTinh : '(rỗng)') + "</td></tr> " +
+                "<tr><th>Ghi Chú </th><td>" + val.attributes.GhiChu + "</td></tr> " +
+                "<tr><th>Tuyến Đường </th><td>" + val.attributes.TuyenDuong + "</td></tr> " +
+                "<tr><th>NVKS_X </th><td>" + (val.attributes.NVKS_X != null ? val.attributes.NVKS_X : '(rỗng)') + "</td></tr> " +
+                "<tr><th>NVKS_Y </th><td>" + (val.attributes.NVKS_Y != null ? val.attributes.NVKS_Y : '(rỗng)') + "</td></tr> " +
+                "<tr><th>Người Cập Nhật </th><td>" + (val.attributes.NguoiCapNhat != null ? val.attributes.NguoiCapNhat : '(rỗng)') + "</td></tr> " +
+                "</table> ",
                 actions: [{
                     id: "showImg",
                     title: "Xem hình ảnh",
@@ -287,11 +302,11 @@ export default {
                         this.addFeature(feature)
                         console.log('feature trong',this.$store.state.feature); // 42
                     });
-                    console.log('feature mapp',this.$store.state.feature)
-                    console.log(event)
+                    // console.log('feature mapp',this.$store.state.feature)
+                    // console.log(event)
                 })
-                console.log(this.update)
-                console.log(this.$store.state.featureLayer)
+                // console.log(this.update)
+                // console.log(this.$store.state.featureLayer)
 
                 // this.$store.state.map.highlight()
                
@@ -303,16 +318,17 @@ export default {
             url: this.$store.state.url
         })
         .then((response) => {
-            console.log(response)
+            // console.log(response)
         })
-    },
-    mounted(){
-        console.log("Start Mounted")
-        // console.log('mouted',this.actionName)
         this.LoadMap()
     },
+    mounted(){
+        // console.log("Start Mounted")
+        // console.log('mouted',this.actionName)
+        // this.LoadMap()
+    },
     updated(){
-        console.log(this.action)
+        // console.log(this.action)
     }
 }
 

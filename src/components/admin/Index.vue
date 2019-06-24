@@ -1,8 +1,8 @@
 <template>
     <div id="app">
         <sidebar-menu :menu="menu"  @itemClick="onItemClick" />
-        <Dashboard v-if="actionName =='NULL'"  style="padding-left:50px;"/>
-        <Users />
+        <dashboard />
+        <router-view/>
     </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
           icon: 'fa fa-home'
         },
         {
+          href:'admin/user',
           title: 'Nhân Viên',
           icon: 'fa fa-user',
           nameEvent: 'NULL',
@@ -29,7 +30,7 @@ export default {
               nameEvent: 'allNV'
             },
             {
-              title: 'Thêm Mới',
+              title: 'Lịch Thi Công',
               nameEvent: 'addNV'
             }
 

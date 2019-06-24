@@ -38,7 +38,8 @@
       :css="css.pagination"
       @vuetable-pagination:change-page="onChangePage"
     ></vuetable-pagination>
-    <EditUser v-bind:user="user" @edited="edited" />
+    <EditUser v-bind:edit="edit" v-bind:user="user" @edited="edited" />
+    <ModalDelete v-bind:dlete="dlete" v-bind:user="user" @deleted="deleted" />
   </div>
 </template>
 
@@ -47,13 +48,15 @@ import Vuetable from 'vuetable-2/src/components/Vuetable'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination'
 import AddUser from './User/AddUser.vue'
 import EditUser from './User/EditUser.vue'
+import ModalDelete from './User/MdDelete.vue'
 import axios from 'axios'
 export default {
   components: {
     Vuetable,
     VuetablePagination,
     AddUser,
-    EditUser
+    EditUser,
+    ModalDelete
   },
   data () {
     return {
@@ -117,7 +120,9 @@ export default {
       actionUser: -1,
       show: false,
       data: null,
-      user: {}
+      user: {},
+      edit: false,
+      dlete: false
     }
   },
   computed: {
@@ -134,13 +139,22 @@ export default {
     },
     edited (val) {
       this.user = null
+      this.edit = false
+    },
+    deleted(val)
+    {
+      this.user = null
+      this.dlete = val
     },
     editRow (rowData) {
+      this.edit = true
       this.user = rowData
       // alert("You clicked edit on"+ JSON.stringify(rowData))
     },
     deleteRow (rowData) {
-      alert('You clicked delete on' + JSON.stringify(rowData))
+      this.dlete = true
+      this.user = rowData
+      // alert('You clicked delete on' + JSON.stringify(rowData))
     },
     onLoading () {
       console.log('loading... show your spinner here')
@@ -170,7 +184,7 @@ export default {
 }
 </script>
 
-<style>
+<style scope="css">
     a.btn:not([href]):not([tabindex]), a.btn:not([href]):not([tabindex]):focus, a.btn:not([href]):not([tabindex]):hover {
         color: #333 !important;
     }

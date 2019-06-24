@@ -44,6 +44,10 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    edit:{
+      type:Boolean,
+      required: true
     }
   },
 
@@ -52,9 +56,13 @@ export default {
     async user (newVal, oldVal) {
       if (newVal !== '') {
         this.userLocal = newVal
-        this.showLocal = true
+        // this.showLocal = true
         console.log(newVal)
       }
+    },
+    async edit(newVal,oldVal)
+    {
+      this.showLocal = newVal
     }
   },
 
