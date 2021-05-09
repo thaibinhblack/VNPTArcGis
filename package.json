@@ -22,7 +22,7 @@
     "core-js": "^2.6.5",
     "esri-loader": "^2.9.2",
     "firebase": "^6.1.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mdbvue": "^5.4.0",
     "postcss-import": "^12.0.1",
     "vue": "^2.6.10",
